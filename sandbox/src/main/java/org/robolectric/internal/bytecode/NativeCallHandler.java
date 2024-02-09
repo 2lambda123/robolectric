@@ -1,5 +1,6 @@
 package org.robolectric.internal.bytecode;
 
+import io.github.pixee.security.BoundedLineReader;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.BufferedReader;
@@ -55,7 +56,7 @@ public class NativeCallHandler {
     try (BufferedReader reader =
         new BufferedReader(new FileReader(exemptionsFile.getPath(), UTF_8))) {
       String line;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         // Sanitize input. Ignore empty lines and commented lines starting with #.
         line = sanitize(line.trim());
         if (line.isEmpty() || line.charAt(0) == '#') {
