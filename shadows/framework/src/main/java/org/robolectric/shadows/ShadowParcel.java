@@ -11,6 +11,7 @@ import static android.os.Build.VERSION_CODES.Q;
 import static android.os.Build.VERSION_CODES.R;
 import static android.os.Build.VERSION_CODES.S;
 import static android.os.Build.VERSION_CODES.TIRAMISU;
+import io.github.pixee.security.ObjectInputFilters;
 import static org.robolectric.RuntimeEnvironment.castNativePtr;
 
 import android.os.BadParcelableException;
@@ -1031,6 +1032,7 @@ public class ShadowParcel {
       try {
         ByteArrayInputStream bis = new ByteArrayInputStream(array, offset, length);
         ObjectInputStream ois = new ObjectInputStream(bis);
+        ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
         int numElements = ois.readInt();
         for (int i = 0; i < numElements; i++) {
           int sizeOf = ois.readInt();
